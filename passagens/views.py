@@ -1,5 +1,7 @@
 from django.shortcuts import render
+
 from passagens.forms import PassagemForms
+
 
 def index(request):
   form = PassagemForms()
@@ -9,9 +11,12 @@ def index(request):
   return render(request, 'index.html', contexto)
 
 def revisao_consulta(request):
+  global contexto
   if request.method == 'POST':
     form = PassagemForms(request.POST)
     contexto = {
       'form': form
     }
-    return render(request, 'minha_consulta.html', contexto)
+    if form.is_valid():
+      return render(request, 'minha_consulta.html', contexto)
+  return render(request, 'index.html', contexto)
